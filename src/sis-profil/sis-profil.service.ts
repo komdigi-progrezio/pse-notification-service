@@ -81,7 +81,9 @@ export class SisProfilService {
         ],
       });
       
-      return sisProfilResource(data);
+      return {
+        data: sisProfilResource(data)
+      }
     } catch (error) {
       throw new Error('An error occurred');
     }
