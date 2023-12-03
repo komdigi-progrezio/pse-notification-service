@@ -1,0 +1,13 @@
+<p>
+    Pejabat Pengganti baru telah melakukan pendaftaran pada {{ user.created_at.format('d/m/Y H:i') }} dengan detail sbb :
+    <br><br>
+    1. Username : {{ user.username }}
+    <br>
+    2. Nama Lengkap : {{ user.nama }}
+    <br>
+    3. NIP : {{ user.nip }}
+    <br>
+    4. Jabatan {{ user.jabatan }}
+    <br>
+    5. Instansi : {{ user.instansi_induk_text }}
+</p>

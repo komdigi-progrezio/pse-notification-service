@@ -1,0 +1,13 @@
+<p>
+    Sistem Elektronik baru telah didaftarkan pada {{ data.created_at->format('d/m/Y H:i') }} dengan detail sbb :
+    <br><br>
+    1. Nama internal : {{ data.nama_internal }}
+    <br>
+    2. Nama eksternal : {{ data.nama_eksternal }}
+    <br>
+    3. Username pendaftar : {{ data.user->username }}
+    <br>
+    4. Nama pendaftar : {{ data.user->nama }}
+    <br>
+    5. Nama Instansi : {{ data.user->instansi_induk_text }}
+</p>
