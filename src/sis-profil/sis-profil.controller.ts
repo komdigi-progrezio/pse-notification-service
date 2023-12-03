@@ -1,7 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SisProfilService } from './sis-profil.service';
-import { filter } from 'rxjs';
 
 @Controller()
 export class SisProfilController {
