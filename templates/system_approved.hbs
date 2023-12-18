@@ -1,0 +1,14 @@
+@component('mail::message')
+Yth {{ name }}, <br><br>
+Berikut ini merupakan informasi dari Sistem Elektronik yang Anda Daftarkan.<br>
+Nama Sistem Elektronik: {{ nama_internal }}<br>
+Tanggal Daftar: {{ created_at }}<br>
+Status: Sudah Diverifikasi<br>
+Nomor Registrasi: {{ no_reg }}<br><br>
+
+Link Image : {{ img_badge }}<br>
+Link Certificate : https://pse.layanan.go.id/sealid/{{ no_reg }}<br><br>
+
+Best Regards,<br>
+PSE
+@endcomponent

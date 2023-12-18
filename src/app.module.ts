@@ -34,6 +34,7 @@ import { role_has_permissions } from 'models/role_has_permissions';
 import { permissions } from 'models/permissions';
 import { par_config } from 'models/par_config';
 import { users } from 'models/users';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { users } from 'models/users';
       users,
     ]),
     SisProfilModule,
+    MailModule,
   ],
 })
 export class AppModule {}
