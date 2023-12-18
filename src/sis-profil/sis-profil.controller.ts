@@ -9,12 +9,12 @@ export class SisProfilController {
 
   @MessagePattern('getComplete')
   getComplete() {
-    return this.sisProfileService.findAll({});
+    return this.sisProfileService.findComplete({});
   }
 
   @MessagePattern('getNew')
   getNew() {
-    return this.sisProfileService.findAll({});
+    return this.sisProfileService.findNew({});
   }
 
   @MessagePattern('getUbahData')

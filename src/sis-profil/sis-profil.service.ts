@@ -24,7 +24,7 @@ import { requestUpdateResource } from 'src/request-update/resource/requestUpdate
 
 @Injectable()
 export class SisProfilService {
-  async findAll({ orderBy = 'created_at', limit = 50, offset = 0 }: {orderBy?: string, limit?: number, offset?: number}): Promise<any> {
+  async findNew({ orderBy = 'created_at', limit = 10, offset = 0 }: {orderBy?: string, limit?: number, offset?: number}): Promise<any> {
     try {
       const data = await sis_profil.findAll({
         order: [[orderBy, 'DESC']],
@@ -89,6 +89,76 @@ export class SisProfilService {
     }
   }
 
+  async findComplete({ orderBy = 'created_at', limit = 10, offset = 0 }: {orderBy?: string, limit?: number, offset?: number}): Promise<any> {
+    try {
+      const data = await sis_profil.findAll({
+        order: [[orderBy, 'DESC']],
+        limit: limit,
+        offset: offset,
+        include: [
+          {
+            model: sis_penyelenggara,
+  
+            include: [
+              {
+                model: par_satuan_kerja,
+                include: [
+                  {
+                    model: par_instansi,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            model: account,
+          },
+          {
+            model: sis_penanggung_jawab,
+          },
+          {
+            model: sis_fungsikhusus,
+            required: true,
+          },
+          {
+            model: sis_ruang_lingkup,
+          },
+          {
+            model: sis_jenis_layanan,
+            required: true,
+          },
+          {
+            model: sis_pengaman,
+            required: true,
+          },
+          {
+            model: sis_tata_kelola,
+          },
+          {
+            model: sis_sop,
+          },
+          {
+            model: sis_software,
+            required: true,
+          },
+          {
+            model: sis_hardware,
+            required: true,
+          },
+          {
+            model: sis_tenaga_ahli_stock,
+          },
+        ],
+      });
+      
+      return {
+        data: sisProfilResource(data)
+      }
+    } catch (error) {
+      throw new Error('An error occurred');
+    }
+  }
+
   async getPergantian(): Promise<any> {
     try {
       const cutoffDate = moment().subtract(365, 'days').toDate();
@@ -102,7 +172,7 @@ export class SisProfilService {
           },
         },
         order: [['modified_at', 'DESC']],
-        limit: 50,
+        limit: 10,
       });
 
       return accountResource(data)
@@ -124,7 +194,7 @@ export class SisProfilService {
           },
         },
         order: [['created_at', 'DESC']],
-        limit: 50,
+        limit: 10,
       });
 
       return accountResource(data)
@@ -149,7 +219,7 @@ export class SisProfilService {
     const data = await request_update.findAll({
       ...queryOptions,
       order: [['created_at', 'DESC']],
-      limit: 50,
+      limit: 10,
       include: [
         {
           model: sis_profil,

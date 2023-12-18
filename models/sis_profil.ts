@@ -216,7 +216,7 @@ export class sis_profil
   sis_jenis_layanans?: sis_jenis_layanan[];
 
   @HasMany(() => sis_pengaman, { sourceKey: 'id' })
-  sis_pengamen?: sis_pengaman[];
+  sis_pengaman?: sis_pengaman[];
 
   @HasMany(() => sis_tata_kelola, { sourceKey: 'id' })
   sis_tata_kelolas?: sis_tata_kelola[];

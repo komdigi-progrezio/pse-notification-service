@@ -67,7 +67,7 @@ export const sisProfilResource = (data: any) => {
       } else {
         a.push(0);
       }
-      if (item.sis_pengamen.length > 0) {
+      if (item.sis_pengaman.length > 0) {
         a.push(1);
       } else {
         a.push(0);
