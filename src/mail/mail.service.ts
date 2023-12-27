@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import * as moment from 'moment';
+import { account } from 'models/account';
 
 @Injectable()
 export class MailService {
@@ -25,7 +26,7 @@ export class MailService {
       subject: 'Pejabat Pendaftar baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_baru',
       context: {
-        created_at:  moment(user.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(user.created_at).format('dd/MM/yyyy HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -34,14 +35,14 @@ export class MailService {
       },
     });
   }
-  
+
   async pejabatPendaftarPengganti(user: any): Promise<void> {
     return await this.mailerService.sendMail({
       to: 'pse@layanan.go.id',
       subject: 'Pejabat Pengganti baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_pengganti',
       context: {
-        created_at:  moment(user.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(user.created_at).format('dd/MM/yyyy HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -66,7 +67,7 @@ export class MailService {
       },
     });
   }
-  
+
   async pendaftaranSeBaru(sisProfil: any): Promise<void> {
     return await this.mailerService.sendMail({
       to: 'pse@layanan.go.id',
@@ -100,7 +101,9 @@ export class MailService {
   async userApproved(user: any): Promise<void> {
     return await this.mailerService.sendMail({
       to: user.username,
-      subject: 'Account Anda pada PSE telah disetujui #' + moment().format('YYYYMMDDHHmmss'),
+      subject:
+        'Account Anda pada PSE telah disetujui #' +
+        moment().format('YYYYMMDDHHmmss'),
       template: 'user_approves',
       context: {
         name: user.nama,
@@ -112,15 +115,20 @@ export class MailService {
   async userRegistration(user: any): Promise<void> {
     return await this.mailerService.sendMail({
       to: user.username,
-      subject: 'Pendaftaran Account Menunggu Persetujuan Admin #' + moment().format('YYYYMMDDHHmmss'),
+      subject:
+        'Pendaftaran Account Menunggu Persetujuan Admin #' +
+        moment().format('YYYYMMDDHHmmss'),
       template: 'user_registration',
       context: {
         name: user.nama,
       },
     });
   }
-  
-  async userEnableAccountSubstitution(user: any, random_password: any): Promise<void> {
+
+  async userEnableAccountSubstitution(
+    user: any,
+    random_password: any,
+  ): Promise<void> {
     return await this.mailerService.sendMail({
       to: user.username,
       subject: 'Aktifkan User Berhasil',
@@ -132,7 +140,7 @@ export class MailService {
       },
     });
   }
-  
+
   async userDisableAccountSubstitution(user: any): Promise<void> {
     return await this.mailerService.sendMail({
       to: user.username,
@@ -143,7 +151,7 @@ export class MailService {
       },
     });
   }
-  
+
   async systemRegistration(system: any): Promise<void> {
     return await this.mailerService.sendMail({
       to: system.user.username,
@@ -152,7 +160,7 @@ export class MailService {
       context: {
         name: system.user.nama,
         nama_internal: system.nama_internal,
-        created_at:  moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
       },
     });
   }
@@ -165,7 +173,7 @@ export class MailService {
       context: {
         name: system.user.nama,
         nama_internal: system.nama_internal,
-        created_at:  moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
       },
     });
   }
@@ -178,20 +186,22 @@ export class MailService {
       context: {
         name: system.user.nama,
         nama_internal: system.nama_internal,
-        created_at:  moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
       },
     });
   }
 
   async systemRegistrationApproved(system: any): Promise<void> {
+    const usernameEmail = await account.findByPk(system.account_id);
+
     return await this.mailerService.sendMail({
-      to: system.user.username,
+      to: usernameEmail.username,
       subject: 'Pencantuman Tanda Terdaftar Sistem Elektronik',
       template: 'system_approved',
       context: {
-        name: system.user.nama,
+        name: usernameEmail.nama,
         nama_internal: system.nama_internal,
-        created_at:  moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
         no_reg: system.no_reg,
         img_badge: '/storage/badge/' + system.img_badge,
       },
@@ -210,5 +220,4 @@ export class MailService {
       },
     });
   }
-
 }
