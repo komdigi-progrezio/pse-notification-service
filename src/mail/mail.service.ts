@@ -21,21 +21,19 @@ export class MailService {
   }
 
   async pejabatPendaftarBaru(user: any): Promise<void> {
-    const data = {
+    return await this.mailerService.sendMail({
       to: 'pse@layanan.go.id',
       subject: 'Pejabat Pendaftar baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_baru',
       context: {
-        created_at: moment(user.created_at).format('d/MM/yyyy HH:mm'),
+        created_at: moment(user.created_at).format('dd/MM/yyyy HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
         jabatan: user.jabatan,
         instansi_induk_text: user.instansi_induk_text,
       },
-    };
-    const resp = await this.mailerService.sendMail(data);
-    return resp
+    });
   }
 
   async pejabatPendaftarPengganti(user: any): Promise<void> {
@@ -127,10 +125,10 @@ export class MailService {
     });
   }
 
-  async userEnableAccountSubstitution(req: any): Promise<void> {
-    const user = req.user;
-    const random_password = req.password;
-
+  async userEnableAccountSubstitution(
+    user: any,
+    random_password: any,
+  ): Promise<void> {
     return await this.mailerService.sendMail({
       to: user.username,
       subject: 'Aktifkan User Berhasil',
