@@ -55,8 +55,8 @@ export class MailController {
   }
 
   @MessagePattern('userEnableAccountSubstitution')
-  userEnableAccountSubstitution(@Payload() request: any) {
-    return this.mailService.userEnableAccountSubstitution(request);
+  userEnableAccountSubstitution(@Payload() request: any, random_password: any) {
+    return this.mailService.userEnableAccountSubstitution(request, random_password);
   }
 
   @MessagePattern('systemRegistration')
