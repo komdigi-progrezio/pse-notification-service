@@ -155,12 +155,14 @@ export class MailService {
   }
 
   async systemRegistration(system: any): Promise<void> {
+    const usernameEmail = await account.findByPk(system.account_id);
+
     return await this.mailerService.sendMail({
-      to: system.user.username,
+      to: usernameEmail.username,
       subject: 'Sistem Elektronik Anda Menunggu Verifikasi!',
       template: 'system_registration',
       context: {
-        name: system.user.nama,
+        name: usernameEmail.nama,
         nama_internal: system.nama_internal,
         created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
       },
@@ -168,12 +170,14 @@ export class MailService {
   }
 
   async systemRegistrationPublish(system: any): Promise<void> {
+    const usernameEmail = await account.findByPk(system.account_id);
+
     return await this.mailerService.sendMail({
-      to: system.user.username,
+      to: usernameEmail.username,
       subject: 'Sistem Elektronik Anda Sudah Dipublikasi',
       template: 'system_publish',
       context: {
-        name: system.user.nama,
+        name: usernameEmail.nama,
         nama_internal: system.nama_internal,
         created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
       },
@@ -181,12 +185,14 @@ export class MailService {
   }
 
   async systemRegistrationInitial(system: any): Promise<void> {
+    const usernameEmail = await account.findByPk(system.account_id);
+
     return await this.mailerService.sendMail({
-      to: system.user.username,
+      to: usernameEmail.username,
       subject: 'Sistem Elektronik Disetujui',
       template: 'system_initial',
       context: {
-        name: system.user.nama,
+        name: usernameEmail.nama,
         nama_internal: system.nama_internal,
         created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
       },
