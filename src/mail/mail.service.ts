@@ -21,12 +21,14 @@ export class MailService {
   }
 
   async pejabatPendaftarBaru(user: any): Promise<void> {
+    const emailAdmin = await this.getUserAdmin();
+
     const data = {
-      to: 'pse@layanan.go.id',
+      to: emailAdmin,
       subject: 'Pejabat Pendaftar baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_baru',
       context: {
-        created_at: moment(user.created_at).format('d/MM/yyyy HH:mm'),
+        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -39,12 +41,14 @@ export class MailService {
   }
 
   async pejabatPendaftarPengganti(user: any): Promise<void> {
+    const emailAdmin = await this.getUserAdmin();
+
     return await this.mailerService.sendMail({
-      to: 'pse@layanan.go.id',
+      to: emailAdmin,
       subject: 'Pejabat Pengganti baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_pengganti',
       context: {
-        created_at: moment(user.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -55,12 +59,14 @@ export class MailService {
   }
 
   async pendaftaranSubPejabat(user: any): Promise<void> {
+    const emailAdmin = await this.getUserAdmin();
+
     return await this.mailerService.sendMail({
-      to: 'pse@layanan.go.id',
+      to: emailAdmin,
       subject: 'Sub-Pejabat baru telah didaftarkan',
       template: 'pendaftaran_sub_pejabat',
       context: {
-        created_at: moment(user.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -71,31 +77,37 @@ export class MailService {
   }
 
   async pendaftaranSeBaru(sisProfil: any): Promise<void> {
+    const emailAdmin = await this.getUserAdmin();
+    const acc = await account.findByPk(sisProfil.account_id);
+
     return await this.mailerService.sendMail({
-      to: 'pse@layanan.go.id',
+      to: emailAdmin,
       subject: 'Sistem Elektronik baru telah didaftarkan',
       template: 'pendaftaran_se_baru',
       context: {
-        created_at: moment(sisProfil.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(sisProfil.created_at).format('DD/MM/YYYY HH:mm'),
         nama_internal: sisProfil.nama_internal,
         nama_eksternal: sisProfil.nama_eksternal,
-        username: sisProfil.user.username,
-        nama: sisProfil.user.nama,
-        instansi_induk_text: sisProfil.user.instansi_induk_text,
+        username: acc.username,
+        nama: acc.nama,
+        instansi_induk_text: acc.instansi_induk_text,
       },
     });
   }
 
   async pendaftaranSe100(sisProfil: any): Promise<void> {
+    const emailAdmin = await this.getUserAdmin();
+    const acc = await account.findByPk(sisProfil.account_id);
+
     return await this.mailerService.sendMail({
-      to: 'pse@layanan.go.id',
+      to: emailAdmin,
       subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
       template: 'pendaftaran_se_100',
       context: {
-        created_at: moment(sisProfil.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(sisProfil.created_at).format('DD/MM/YYYY HH:mm'),
         nama_internal: sisProfil.nama_internal,
         nama_eksternal: sisProfil.nama_eksternal,
-        instansi_induk_text: sisProfil.user.instansi_induk_text,
+        instansi_induk_text: acc.instansi_induk_text,
       },
     });
   }
@@ -164,7 +176,7 @@ export class MailService {
       context: {
         name: usernameEmail.nama,
         nama_internal: system.nama_internal,
-        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
       },
     });
   }
@@ -179,7 +191,7 @@ export class MailService {
       context: {
         name: usernameEmail.nama,
         nama_internal: system.nama_internal,
-        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
       },
     });
   }
@@ -194,7 +206,7 @@ export class MailService {
       context: {
         name: usernameEmail.nama,
         nama_internal: system.nama_internal,
-        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
       },
     });
   }
@@ -209,7 +221,7 @@ export class MailService {
       context: {
         name: usernameEmail.nama,
         nama_internal: system.nama_internal,
-        created_at: moment(system.created_at).format('dd/MM/yyyy HH:mm'),
+        created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
         no_reg: system.no_reg,
         img_badge: '/storage/badge/' + system.img_badge,
       },
@@ -217,8 +229,10 @@ export class MailService {
   }
 
   async systemRegistrationNotificationBadge(system: any): Promise<void> {
+    const acc = await account.findByPk(system.account_id);
+
     return await this.mailerService.sendMail({
-      to: system.user.username,
+      to: acc.username,
       subject: 'Pemasangan Certificate & Badge Sistem Elektronik',
       template: 'system_notification_badge',
       context: {
@@ -228,4 +242,17 @@ export class MailService {
       },
     });
   }
+
+  async getUserAdmin() {
+    const acc = await account.findAll({
+      attributes: ['username'],
+      where: {
+        is_admin: 1,
+        is_notify: true,
+      }
+    });
+
+    return acc.map((account) => account.username);
+  }
+
 }
