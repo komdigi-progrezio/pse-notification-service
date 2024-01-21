@@ -83,5 +83,10 @@ export class MailController {
   systemRegistrationNotificationBadge(@Payload() request: any) {
     return this.mailService.systemRegistrationNotificationBadge(request);
   }
+  
+  @MessagePattern('systemRequestUpdate')
+  systemRequestUpdate(@Payload() request: any) {
+    return this.mailService.systemRequestUpdate(request);
+  }
 
 }
