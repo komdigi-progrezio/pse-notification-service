@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import * as moment from 'moment';
 import { account } from 'models/account';
+import { sis_profil } from 'models/sis_profil';
+import { request_update } from 'models/request_update';
 
 @Injectable()
 export class MailService {
@@ -37,7 +39,7 @@ export class MailService {
       },
     };
     const resp = await this.mailerService.sendMail(data);
-    return resp
+    return resp;
   }
 
   async pejabatPendaftarPengganti(user: any): Promise<void> {
@@ -243,16 +245,37 @@ export class MailService {
     });
   }
 
+  async systemRequestUpdate(body: any): Promise<void> {
+    const emailAdmin = await this.getUserAdmin();
+    const system = await sis_profil.findByPk(body.sis_profil_id);
+    const requestUpdate = await request_update.findByPk(body.id);
+    const user = await account.findByPk(body.user_id);
+
+    return await this.mailerService.sendMail({
+      to: emailAdmin,
+      subject: 'Permintaan Pengajuan Perubahan Data',
+      template: 'system_request_update',
+      context: {
+        nama_internal: system.nama_internal,
+        nama_eksternal: system.nama_eksternal,
+        reason: body.reason,
+        username: user.username,
+        nama: user.nama,
+        instansi_induk_text: user.instansi_induk_text,
+        created_at: moment(requestUpdate.created_at).format('DD/MM/YYYY HH:mm'),
+      },
+    });
+  }
+
   async getUserAdmin() {
     const acc = await account.findAll({
       attributes: ['username'],
       where: {
         is_admin: 1,
         is_notify: true,
-      }
+      },
     });
 
     return acc.map((account) => account.username);
   }
-
 }
