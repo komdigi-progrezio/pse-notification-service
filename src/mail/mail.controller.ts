@@ -22,18 +22,18 @@ export class MailController {
   pejabatPendaftarPengganti(@Payload() request: any) {
     return this.mailService.pejabatPendaftarPengganti(request);
   }
-  
+
   // not yet implemented on user parentUserFilter
   @MessagePattern('pendaftaranSubPejabat')
   pendaftaranSubPejabat(@Payload() request: any) {
     return this.mailService.pendaftaranSubPejabat(request);
   }
-  
+
   @MessagePattern('pendaftaranSeBaru')
   pendaftaranSeBaru(@Payload() request: any) {
     return this.mailService.pendaftaranSeBaru(request);
   }
-  
+
   @MessagePattern('pendaftaranSe100')
   pendaftaranSe100(@Payload() request: any) {
     return this.mailService.pendaftaranSe100(request);
@@ -63,30 +63,33 @@ export class MailController {
   systemRegistration(@Payload() request: any) {
     return this.mailService.systemRegistration(request);
   }
-  
+
   @MessagePattern('systemRegistrationPublish')
   systemRegistrationPublish(@Payload() request: any) {
     return this.mailService.systemRegistrationPublish(request);
   }
-  
+
   @MessagePattern('systemRegistrationInitial')
   systemRegistrationInitial(@Payload() request: any) {
     return this.mailService.systemRegistrationInitial(request);
   }
-  
+
   @MessagePattern('systemRegistrationApproved')
   systemRegistrationApproved(@Payload() request: any) {
     return this.mailService.systemRegistrationApproved(request);
   }
-  
+
   @MessagePattern('systemRegistrationNotificationBadge')
   systemRegistrationNotificationBadge(@Payload() request: any) {
     return this.mailService.systemRegistrationNotificationBadge(request);
   }
-  
+
   @MessagePattern('systemRequestUpdate')
   systemRequestUpdate(@Payload() request: any) {
     return this.mailService.systemRequestUpdate(request);
   }
-
+  @MessagePattern('checkProgressSystem')
+  checkProgressSystem(@Payload() request: any) {
+    return this.mailService.checkProgressSystem(request);
+  }
 }
