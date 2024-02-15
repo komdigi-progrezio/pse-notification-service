@@ -4,6 +4,16 @@ import * as moment from 'moment';
 import { account } from 'models/account';
 import { sis_profil } from 'models/sis_profil';
 import { request_update } from 'models/request_update';
+import { sis_fungsikhusus } from 'models/sis_fungsikhusus';
+import { sis_ruang_lingkup } from 'models/sis_ruang_lingkup';
+import { sis_jenis_layanan } from 'models/sis_jenis_layanan';
+import { sis_pengaman } from 'models/sis_pengaman';
+import { sis_software } from 'models/sis_software';
+import { sis_hardware } from 'models/sis_hardware';
+import { sis_tenaga_ahli_stock } from 'models/sis_tenaga_ahli_stock';
+import { sis_tata_kelola } from 'models/sis_tata_kelola';
+import { sis_sop } from 'models/sis_sop';
+import { sis_tenaga_ahli } from 'models/sis_tenaga_ahli';
 
 @Injectable()
 export class MailService {
@@ -265,6 +275,164 @@ export class MailService {
         created_at: moment(requestUpdate.created_at).format('DD/MM/YYYY HH:mm'),
       },
     });
+  }
+
+  async checkProgressSystem(sis_profil_id: any) {
+    const item: any = await sis_profil.findByPk(sis_profil_id);
+    const percent = async () => {
+      const arr = [];
+
+      if (item.nama_internal) {
+        arr.push(1);
+      }
+      if (item.nama_eksternal) {
+        arr.push(1);
+      }
+      if (item.deskripsi) {
+        arr.push(1);
+      }
+      if (item.cakupan_wilayah) {
+        arr.push(1);
+      }
+      if (item.sifat_khusus) {
+        arr.push(1);
+      }
+
+      const total = arr.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+
+      const a = [];
+      if (total > 0) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_fungsikhususes = await sis_fungsikhusus.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+      if (item.sis_fungsikhususes) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_ruang_lingkups = await sis_ruang_lingkup.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+      if (item.sis_ruang_lingkups) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_jenis_layanans = await sis_jenis_layanan.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+      if (item.sis_jenis_layanans) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_pengamen = await sis_pengaman.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+      if (item.sis_pengamen) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_hardwares = await sis_hardware.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+
+      if (item.sis_hardwares) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_softwares = await sis_software.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+      if (item.sis_softwares) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_tenaga_ahli_stocks = await sis_tenaga_ahli.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+
+      if (item.sis_tenaga_ahli_stocks) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_tata_kelolas = await sis_tata_kelola.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+      if (item.sis_tata_kelolas) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+      item.sis_sops = await sis_sop.findOne({
+        where: {
+          sis_profil_id: item.id,
+        },
+      });
+      if (item.sis_sops) {
+        a.push(1);
+      } else {
+        a.push(0);
+      }
+
+      const totalItem = a.length;
+      const totalSum: number = a.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+      );
+
+      return (totalSum / totalItem) * 100;
+    };
+
+    if ((await percent()) === 100) {
+      const emailAdmin = await this.getUserAdmin();
+      const acc = await account.findByPk(item.account_id);
+
+      console.log(acc.instansi_induk_text);
+
+      await this.mailerService.sendMail({
+        // to: 'emailadmin@yopmail.com',
+        to: emailAdmin,
+        subject:
+          'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+        template: 'pendaftaran_se_100',
+        context: {
+          created_at: moment(item.created_at).format('DD/MM/YYYY HH:mm'),
+          nama_internal: item.nama_internal,
+          nama_eksternal: item.nama_eksternal,
+          instansi_induk_text: acc.instansi_induk_text,
+          createdByName: acc.nama,
+          username: acc.username,
+        },
+      });
+    }
   }
 
   async getUserAdmin() {
