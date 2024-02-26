@@ -88,6 +88,10 @@ export class MailController {
   systemRequestUpdate(@Payload() request: any) {
     return this.mailService.systemRequestUpdate(request);
   }
+  @MessagePattern('userSystemRequestUpdate')
+  userSystemRequestUpdate(@Payload() request: any) {
+    return this.mailService.userSystemRequestUpdate(request);
+  }
   @MessagePattern('checkProgressSystem')
   checkProgressSystem(@Payload() request: any) {
     return this.mailService.checkProgressSystem(request);

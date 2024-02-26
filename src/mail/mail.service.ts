@@ -276,6 +276,27 @@ export class MailService {
       },
     });
   }
+  async userSystemRequestUpdate(body: any): Promise<void> {
+    const emailAdmin = await this.getUserAdmin();
+    const system = await sis_profil.findByPk(body.sis_profil_id);
+    const requestUpdate = await request_update.findByPk(body.id);
+    const user = await account.findByPk(body.user_id);
+
+    return await this.mailerService.sendMail({
+      to: user.username,
+      subject: 'Permintaan Pengajuan Perubahan Data',
+      template: 'user_system_request_update',
+      context: {
+        nama_internal: system.nama_internal,
+        nama_eksternal: system.nama_eksternal,
+        reason: body.reason,
+        username: user.username,
+        nama: user.nama,
+        instansi_induk_text: user.instansi_induk_text,
+        created_at: moment(requestUpdate.created_at).format('DD/MM/YYYY HH:mm'),
+      },
+    });
+  }
 
   async checkProgressSystem(sis_profil_id: any) {
     const item: any = await sis_profil.findByPk(sis_profil_id);
