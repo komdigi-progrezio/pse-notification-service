@@ -111,6 +111,19 @@ export class MailService {
     const emailAdmin = await this.getUserAdmin();
     const acc = await account.findByPk(sisProfil.account_id);
 
+    await this.mailerService.sendMail({
+      to: 'https://bsre.bssn.go.id/',
+      subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+      template: 'pendaftaran_se_100_bsre',
+      context: {
+        created_at: moment(sisProfil.created_at).format('DD/MM/YYYY HH:mm'),
+        nama_internal: sisProfil.nama_internal,
+        nomor_pemohon: sisProfil.id,
+        nomor_registratsi: sisProfil.no_reg,
+        instansi_induk_text: acc.instansi_induk_text,
+      },
+    });
+
     return await this.mailerService.sendMail({
       to: emailAdmin,
       subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
