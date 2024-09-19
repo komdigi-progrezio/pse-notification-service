@@ -54,6 +54,11 @@ export class MailController {
     return this.mailService.userDisableAccountSubstitution(request);
   }
 
+  @MessagePattern('userRejectRegistration')
+  userRejectRegistration(@Payload() request: any) {
+    return this.mailService.userRejectRegistration(request);
+  }
+
   @MessagePattern('userEnableAccountSubstitution')
   userEnableAccountSubstitution(@Payload() request: any) {
     return this.mailService.userEnableAccountSubstitution(request);

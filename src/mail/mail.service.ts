@@ -178,6 +178,18 @@ export class MailService {
     });
   }
 
+  async userRejectRegistration(user: any): Promise<void> {
+    return await this.mailerService.sendMail({
+      to: user.username,
+      subject: 'Penolakan User Berhasil',
+      template: 'user_reject_registration',
+      context: {
+        name: user.nama,
+        alasan: user.alasan, 
+      },
+    });
+  }
+
   async systemRegistration(system: any): Promise<void> {
     const usernameEmail = await account.findByPk(system.account_id);
 
