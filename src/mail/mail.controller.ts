@@ -55,7 +55,7 @@ export class MailController {
   }
 
   @MessagePattern('userRejectRegistration')
-  userRejectRegistration(@Payload() request: any) {
+  userRejectRegistration(@Payload() request: { user: any; alasan: string }) {
     return this.mailService.userRejectRegistration(request);
   }
 
