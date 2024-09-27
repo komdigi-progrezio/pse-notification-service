@@ -191,14 +191,15 @@ export class MailService {
     });
   }
 
-  async userRejectRegistration(user: any): Promise<void> {
+  async userRejectRegistration(request: { user: any; alasan: string }): Promise<void> {
+    const { user, alasan } = request;
     return await this.mailerService.sendMail({
       to: user.username,
       subject: 'Penolakan User Berhasil',
       template: 'user_reject_registration',
       context: {
         name: user.nama,
-        alasan: user.alasan, 
+        alasan: alasan,
       },
     });
   }
