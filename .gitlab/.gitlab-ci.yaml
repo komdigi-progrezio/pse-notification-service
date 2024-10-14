@@ -35,6 +35,7 @@ publish:
     - docker $DOCKER_CONFIG_FILE build --tag ${CI_IMAGE_NAME}:${CI_COMMIT_REF_NAME}-${CI_PIPELINE_IID} .
     - docker $DOCKER_CONFIG_FILE push ${CI_IMAGE_NAME}:${CI_COMMIT_REF_NAME}-${CI_PIPELINE_IID}
   only:
+    - pse-om2024-dev
     - pse-om2024-prod
 
 deploy-dev:
