@@ -461,7 +461,7 @@ export class MailService {
     if ((await percent()) === 100) {
       const emailAdmin = await this.getUserAdmin();
       const acc = await account.findByPk(item.account_id);
-      const filePath = process.cwd() + '/assets/document_se/' + item.dokumen;
+      const filePath = process.cwd() + '/assets/document/' + item.dokumen;
       console.log(acc.instansi_induk_text);
 
       await this.mailerService.sendMail({
