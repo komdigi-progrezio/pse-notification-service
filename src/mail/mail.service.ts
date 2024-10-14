@@ -111,6 +111,19 @@ export class MailService {
     const emailAdmin = await this.getUserAdmin();
     const acc = await account.findByPk(sisProfil.account_id);
 
+    await this.mailerService.sendMail({
+      to: 'info.bsre@bssn.go.id',
+      subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+      template: 'pendaftaran_se_100_bsre',
+      context: {
+        created_at: moment(sisProfil.created_at).format('DD/MM/YYYY HH:mm'),
+        nama_internal: sisProfil.nama_internal,
+        nomor_pemohon: sisProfil.id,
+        nomor_registratsi: sisProfil.no_reg,
+        instansi_induk_text: acc.instansi_induk_text,
+      },
+    });
+
     return await this.mailerService.sendMail({
       to: emailAdmin,
       subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
@@ -448,8 +461,28 @@ export class MailService {
     if ((await percent()) === 100) {
       const emailAdmin = await this.getUserAdmin();
       const acc = await account.findByPk(item.account_id);
-
+      const filePath = process.cwd() + '/assets/document/' + item.dokumen;
       console.log(acc.instansi_induk_text);
+
+      await this.mailerService.sendMail({
+        to: 'info.bsre@bssn.go.id',
+        subject: 
+          'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+        template: 'pendaftaran_se_100_bsre',
+        context: {
+          created_at: moment(item.created_at).format('DD/MM/YYYY HH:mm'),
+          nama_internal: item.nama_internal,
+          nomor_pemohon: item.id,
+          nomor_registratsi: item.no_reg,
+          instansi_induk_text: acc.instansi_induk_text,
+        },
+        attachments: [
+          {
+            name: item.dokumen,
+            path: filePath,
+          },
+        ],
+      });
 
       await this.mailerService.sendMail({
         // to: 'emailadmin@yopmail.com',
