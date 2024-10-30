@@ -121,6 +121,7 @@ export class MailService {
         nomor_pemohon: sisProfil.id,
         nomor_registratsi: sisProfil.no_reg,
         instansi_induk_text: acc.instansi_induk_text,
+        createdByName: acc.nama,
       },
     });
 
@@ -474,6 +475,7 @@ export class MailService {
           nama_internal: item.nama_internal,
           nomor_pemohon: item.id,
           nomor_registratsi: item.no_reg,
+          createdByName: acc.nama,
           instansi_induk_text: acc.instansi_induk_text,
         },
         attachments: [
