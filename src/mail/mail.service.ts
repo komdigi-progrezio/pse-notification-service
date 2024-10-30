@@ -40,7 +40,7 @@ export class MailService {
       subject: 'Pejabat Pendaftar baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_baru',
       context: {
-        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
+        created_at: moment(new Date(user.created_at)).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -60,7 +60,7 @@ export class MailService {
       subject: 'Pejabat Pengganti baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_pengganti',
       context: {
-        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
+        created_at: moment(new Date(user.created_at)).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -78,7 +78,7 @@ export class MailService {
       subject: 'Sub-Pejabat baru telah didaftarkan',
       template: 'pendaftaran_sub_pejabat',
       context: {
-        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
+        created_at: moment(new Date(user.created_at)).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
