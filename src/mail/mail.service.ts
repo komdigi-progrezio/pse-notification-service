@@ -191,6 +191,19 @@ export class MailService {
     });
   }
 
+  async userGetOtp(request: { user: any; otpCode: string }): Promise<void> {
+    const { user, otpCode } = request;
+    return await this.mailerService.sendMail({
+      to: user.username,
+      subject: 'Verifikasi OTP',
+      template: 'user_get_otp',
+      context: {
+        name: user,
+        otp: otpCode,
+      },
+    });
+  }
+
   async systemRegistration(system: any): Promise<void> {
     const usernameEmail = await account.findByPk(system.account_id);
 

@@ -49,6 +49,11 @@ export class MailController {
     return this.mailService.userRegistration(request);
   }
 
+  @MessagePattern('userGetOtp')
+  userGetOtp(@Payload() request: { user: any; otpCode: string }) {
+    return this.mailService.userGetOtp(request);
+  }
+
   @MessagePattern('userDisableAccountSubstitution')
   userDisableAccountSubstitution(@Payload() request: any) {
     return this.mailService.userDisableAccountSubstitution(request);
