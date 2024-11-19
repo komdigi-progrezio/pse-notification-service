@@ -40,7 +40,7 @@ export class MailService {
       subject: 'Pejabat Pendaftar baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_baru',
       context: {
-        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
+        created_at: moment(new Date(user.created_at)).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -60,7 +60,7 @@ export class MailService {
       subject: 'Pejabat Pengganti baru telah melakukan pendaftaran',
       template: 'pejabat_pendaftar_pengganti',
       context: {
-        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
+        created_at: moment(new Date(user.created_at)).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -78,7 +78,7 @@ export class MailService {
       subject: 'Sub-Pejabat baru telah didaftarkan',
       template: 'pendaftaran_sub_pejabat',
       context: {
-        created_at: moment(user.created_at).format('DD/MM/YYYY HH:mm'),
+        created_at: moment(new Date(user.created_at)).format('DD/MM/YYYY HH:mm'),
         username: user.username,
         nama: user.nama,
         nip: user.nip,
@@ -110,6 +110,20 @@ export class MailService {
   async pendaftaranSe100(sisProfil: any): Promise<void> {
     const emailAdmin = await this.getUserAdmin();
     const acc = await account.findByPk(sisProfil.account_id);
+
+    await this.mailerService.sendMail({
+      to: 'info.bsre@bssn.go.id',
+      subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+      template: 'pendaftaran_se_100_bsre',
+      context: {
+        created_at: moment(sisProfil.created_at).format('DD/MM/YYYY HH:mm'),
+        nama_internal: sisProfil.nama_internal,
+        nomor_pemohon: sisProfil.id,
+        nomor_registratsi: sisProfil.no_reg,
+        instansi_induk_text: acc.instansi_induk_text,
+        createdByName: acc.nama,
+      },
+    });
 
     return await this.mailerService.sendMail({
       to: emailAdmin,
@@ -461,8 +475,29 @@ export class MailService {
     if ((await percent()) === 100) {
       const emailAdmin = await this.getUserAdmin();
       const acc = await account.findByPk(item.account_id);
-
+      const filePath = process.cwd() + '/assets/document/' + item.dokumen;
       console.log(acc.instansi_induk_text);
+
+      await this.mailerService.sendMail({
+        to: 'info.bsre@bssn.go.id',
+        subject: 
+          'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+        template: 'pendaftaran_se_100_bsre',
+        context: {
+          created_at: moment(item.created_at).format('DD/MM/YYYY HH:mm'),
+          nama_internal: item.nama_internal,
+          nomor_pemohon: item.id,
+          nomor_registratsi: item.no_reg,
+          createdByName: acc.nama,
+          instansi_induk_text: acc.instansi_induk_text,
+        },
+        attachments: [
+          {
+            name: item.dokumen,
+            path: filePath,
+          },
+        ],
+      });
 
       await this.mailerService.sendMail({
         // to: 'emailadmin@yopmail.com',
