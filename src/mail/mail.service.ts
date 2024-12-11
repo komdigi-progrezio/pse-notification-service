@@ -112,7 +112,7 @@ export class MailService {
     const acc = await account.findByPk(sisProfil.account_id);
 
     await this.mailerService.sendMail({
-      to: 'info.bsre@bssn.go.id',
+      to: 'Tu.D3@bssn.go.id',
       subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
       template: 'pendaftaran_se_100_bsre',
       context: {
@@ -260,7 +260,7 @@ export class MailService {
       console.log(filePath)
 
       await this.mailerService.sendMail({
-        to: 'info.bsre@bssn.go.id',
+        to: 'Tu.D3@bssn.go.id',
         subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
         template: 'pendaftaran_se_100_bsre',
         context: {
@@ -284,7 +284,7 @@ export class MailService {
       console.log("Without Attach")
 
       await this.mailerService.sendMail({
-        to: 'info.bsre@bssn.go.id',
+        to: 'Tu.D3@bssn.go.id',
         subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
         template: 'pendaftaran_se_100_bsre',
         context: {
@@ -512,7 +512,7 @@ export class MailService {
       console.log(acc.instansi_induk_text);
 
       await this.mailerService.sendMail({
-        to: 'info.bsre@bssn.go.id',
+        to: 'Tu.D3@bssn.go.id',
         subject: 
           'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
         template: 'pendaftaran_se_100_bsre',
