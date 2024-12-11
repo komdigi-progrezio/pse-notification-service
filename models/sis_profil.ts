@@ -67,6 +67,7 @@ export interface sis_profilAttributes {
   keylock_expired?: Date;
   approved_publish?: boolean;
   approved_publish_date?: Date;
+  dokumen?: string;
 }
 
 @Table({ tableName: 'sis_profil', schema: 'public', timestamps: false })
@@ -193,6 +194,9 @@ export class sis_profil
     defaultValue: Sequelize.literal('now()'),
   })
   approved_publish_date?: Date;
+
+  @Column({ allowNull: true, type: DataType.STRING(255) })
+  dokumen?: string;
 
   @HasOne(() => sis_penyelenggara, { sourceKey: 'id' })
   sis_penyelenggara?: sis_penyelenggara;

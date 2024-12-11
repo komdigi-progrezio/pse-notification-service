@@ -121,6 +121,7 @@ export class MailService {
         nomor_pemohon: sisProfil.id,
         nomor_registratsi: sisProfil.no_reg,
         instansi_induk_text: acc.instansi_induk_text,
+        nama: acc.nama,
       },
     });
 
@@ -251,7 +252,53 @@ export class MailService {
 
   async systemRegistrationApproved(system: any): Promise<void> {
     const usernameEmail = await account.findByPk(system.account_id);
+    const acc = await account.findByPk(system.account_id);
+    const item: any = await sis_profil.findByPk(system.id);
+    if(item.dokumen){
+      console.log("With Attach")
+      const filePath = process.cwd() + '/assets/document/' + item.dokumen;
+      console.log(filePath)
 
+      await this.mailerService.sendMail({
+        to: 'info.bsre@bssn.go.id',
+        subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+        template: 'pendaftaran_se_100_bsre',
+        context: {
+          created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
+          nama_internal: system.nama_internal,
+          nomor_pemohon: system.id,
+          nomor_registratsi: system.no_reg,
+          nama: acc.nama,
+          instansi_induk_text: acc.instansi_induk_text,
+          name_sifat_khusus: system.name_sifat_khusus,
+        },
+        attachments: [
+          {
+            filename: system.dokumen,
+            path: filePath,
+            contentDisposition: 'attachment'
+          },
+        ],
+      });
+    } else {
+      console.log("Without Attach")
+
+      await this.mailerService.sendMail({
+        to: 'info.bsre@bssn.go.id',
+        subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+        template: 'pendaftaran_se_100_bsre',
+        context: {
+          created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
+          nama_internal: system.nama_internal,
+          nomor_pemohon: system.id,
+          nomor_registratsi: system.no_reg,
+          nama: acc.nama,
+          instansi_induk_text: acc.instansi_induk_text,
+          name_sifat_khusus: system.name_sifat_khusus,
+        },
+      });
+    }
+    
     return await this.mailerService.sendMail({
       to: usernameEmail.username,
       subject: 'Pencantuman Tanda Terdaftar Sistem Elektronik',
@@ -474,6 +521,7 @@ export class MailService {
           nama_internal: item.nama_internal,
           nomor_pemohon: item.id,
           nomor_registratsi: item.no_reg,
+          nama: acc.nama,
           instansi_induk_text: acc.instansi_induk_text,
         },
         attachments: [
@@ -495,7 +543,7 @@ export class MailService {
           nama_internal: item.nama_internal,
           nama_eksternal: item.nama_eksternal,
           instansi_induk_text: acc.instansi_induk_text,
-          createdByName: acc.nama,
+          nama: acc.nama,
           username: acc.username,
         },
       });
