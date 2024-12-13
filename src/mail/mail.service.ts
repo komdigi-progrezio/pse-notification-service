@@ -205,15 +205,15 @@ export class MailService {
     });
   }
 
-  async userGetOtp(request: { user: any; otpCode: string }): Promise<void> {
-    const { user, otpCode } = request;
+  async userGetOtp(request: { username: string; otpCode: { otpCode: number } }): Promise<void> {
+    const { username, otpCode } = request;
     return await this.mailerService.sendMail({
-      to: user.username,
+      to: username,
       subject: 'Verifikasi OTP',
       template: 'user_get_otp',
       context: {
-        name: user,
-        otp: otpCode,
+        name: username, 
+        otp: otpCode.otpCode,
       },
     });
   }

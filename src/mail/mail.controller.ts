@@ -50,7 +50,7 @@ export class MailController {
   }
 
   @MessagePattern('userGetOtp')
-  userGetOtp(@Payload() request: { user: any; otpCode: string }) {
+  userGetOtp(@Payload() request: { username: any; otpCode: { otpCode: number } }) {
     return this.mailService.userGetOtp(request);
   }
 
