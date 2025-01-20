@@ -111,19 +111,19 @@ export class MailService {
     const emailAdmin = await this.getUserAdmin();
     const acc = await account.findByPk(sisProfil.account_id);
 
-    await this.mailerService.sendMail({
-      to: 'info.bsre@bssn.go.id',
-      subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
-      template: 'pendaftaran_se_100_bsre',
-      context: {
-        created_at: moment(sisProfil.created_at).format('DD/MM/YYYY HH:mm'),
-        nama_internal: sisProfil.nama_internal,
-        nomor_pemohon: sisProfil.id,
-        nomor_registratsi: sisProfil.no_reg,
-        instansi_induk_text: acc.instansi_induk_text,
-        createdByName: acc.nama,
-      },
-    });
+    // await this.mailerService.sendMail({
+    //   to: 'Tu.D3@bssn.go.id',
+    //   subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+    //   template: 'pendaftaran_se_100_bsre',
+    //   context: {
+    //     created_at: moment(sisProfil.created_at).format('DD/MM/YYYY HH:mm'),
+    //     nama_internal: sisProfil.nama_internal,
+    //     nomor_pemohon: sisProfil.id,
+    //     nomor_registratsi: sisProfil.no_reg,
+    //     instansi_induk_text: acc.instansi_induk_text,
+    //     nama: acc.nama,
+    //   },
+    // });
 
     return await this.mailerService.sendMail({
       to: emailAdmin,
@@ -272,44 +272,44 @@ export class MailService {
       const filePath = process.cwd() + '/assets/document/' + item.dokumen;
       console.log(filePath)
 
-      await this.mailerService.sendMail({
-        to: 'info.bsre@bssn.go.id',
-        subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
-        template: 'pendaftaran_se_100_bsre',
-        context: {
-          created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
-          nama_internal: system.nama_internal,
-          nomor_pemohon: system.id,
-          nomor_registratsi: system.no_reg,
-          nama: acc.nama,
-          instansi_induk_text: acc.instansi_induk_text,
-          name_sifat_khusus: system.name_sifat_khusus,
-        },
-        attachments: [
-          {
-            filename: system.dokumen,
-            path: filePath,
-            contentDisposition: 'attachment'
-          },
-        ],
-      });
+      // await this.mailerService.sendMail({
+      //   to: 'Tu.D3@bssn.go.id',
+      //   subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+      //   template: 'pendaftaran_se_100_bsre',
+      //   context: {
+      //     created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
+      //     nama_internal: system.nama_internal,
+      //     nomor_pemohon: system.id,
+      //     nomor_registratsi: system.no_reg,
+      //     nama: acc.nama,
+      //     instansi_induk_text: acc.instansi_induk_text,
+      //     name_sifat_khusus: system.name_sifat_khusus,
+      //   },
+      //   attachments: [
+      //     {
+      //       filename: system.dokumen,
+      //       path: filePath,
+      //       contentDisposition: 'attachment'
+      //     },
+      //   ],
+      // });
     } else {
       console.log("Without Attach")
 
-      await this.mailerService.sendMail({
-        to: 'info.bsre@bssn.go.id',
-        subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
-        template: 'pendaftaran_se_100_bsre',
-        context: {
-          created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
-          nama_internal: system.nama_internal,
-          nomor_pemohon: system.id,
-          nomor_registratsi: system.no_reg,
-          nama: acc.nama,
-          instansi_induk_text: acc.instansi_induk_text,
-          name_sifat_khusus: system.name_sifat_khusus,
-        },
-      });
+      // await this.mailerService.sendMail({
+      //   to: 'Tu.D3@bssn.go.id',
+      //   subject: 'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+      //   template: 'pendaftaran_se_100_bsre',
+      //   context: {
+      //     created_at: moment(system.created_at).format('DD/MM/YYYY HH:mm'),
+      //     nama_internal: system.nama_internal,
+      //     nomor_pemohon: system.id,
+      //     nomor_registratsi: system.no_reg,
+      //     nama: acc.nama,
+      //     instansi_induk_text: acc.instansi_induk_text,
+      //     name_sifat_khusus: system.name_sifat_khusus,
+      //   },
+      // });
     }
     
     return await this.mailerService.sendMail({
@@ -524,26 +524,26 @@ export class MailService {
       const filePath = process.cwd() + '/assets/document/' + item.dokumen;
       console.log(acc.instansi_induk_text);
 
-      await this.mailerService.sendMail({
-        to: 'info.bsre@bssn.go.id',
-        subject: 
-          'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
-        template: 'pendaftaran_se_100_bsre',
-        context: {
-          created_at: moment(item.created_at).format('DD/MM/YYYY HH:mm'),
-          nama_internal: item.nama_internal,
-          nomor_pemohon: item.id,
-          nomor_registratsi: item.no_reg,
-          createdByName: acc.nama,
-          instansi_induk_text: acc.instansi_induk_text,
-        },
-        attachments: [
-          {
-            name: item.dokumen,
-            path: filePath,
-          },
-        ],
-      });
+      // await this.mailerService.sendMail({
+      //   to: 'Tu.D3@bssn.go.id',
+      //   subject: 
+      //     'Sistem Elektronik berikut telah mencapai kelengkapan data 100%',
+      //   template: 'pendaftaran_se_100_bsre',
+      //   context: {
+      //     created_at: moment(item.created_at).format('DD/MM/YYYY HH:mm'),
+      //     nama_internal: item.nama_internal,
+      //     nomor_pemohon: item.id,
+      //     nomor_registratsi: item.no_reg,
+      //     nama: acc.nama,
+      //     instansi_induk_text: acc.instansi_induk_text,
+      //   },
+      //   attachments: [
+      //     {
+      //       name: item.dokumen,
+      //       path: filePath,
+      //     },
+      //   ],
+      // });
 
       await this.mailerService.sendMail({
         // to: 'emailadmin@yopmail.com',
@@ -556,7 +556,7 @@ export class MailService {
           nama_internal: item.nama_internal,
           nama_eksternal: item.nama_eksternal,
           instansi_induk_text: acc.instansi_induk_text,
-          createdByName: acc.nama,
+          nama: acc.nama,
           username: acc.username,
         },
       });
