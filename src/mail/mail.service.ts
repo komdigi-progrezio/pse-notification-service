@@ -574,4 +574,19 @@ export class MailService {
 
     return acc.map((account) => account.username);
   }
+
+  async sendCreatePasswordEmail(request: { email: string; link: string }): Promise<void> {
+    const { email, link } = request;
+
+    return await this.mailerService.sendMail({
+      to: email,
+      subject: 'Buat Password Baru untuk Akun PSE Anda',
+      template: 'create_password',
+      context: {
+        email,
+        link,
+      },
+    });
+  }
+
 }

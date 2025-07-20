@@ -106,4 +106,10 @@ export class MailController {
   checkProgressSystem(@Payload() request: any) {
     return this.mailService.checkProgressSystem(request);
   }
+
+  @MessagePattern('sendCreatePasswordEmail')
+  sendCreatePasswordEmail(@Payload() request: { email: string; link: string }) {
+    return this.mailService.sendCreatePasswordEmail(request);
+  }
+
 }
